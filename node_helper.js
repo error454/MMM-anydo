@@ -10,12 +10,21 @@ function getAnyDo(module, config){
     anydo(options, (err, result) => {
         if (err) throw err
         
-        // get the titles of all your tasks
-        var tasks = result.models.task.items.filter(function(obj) {
-            return config.categoryID === obj.categoryId;
+        // get the titles of all completed and uncompleted tasks
+        var completedTasks = result.models.task.items.filter(function(obj) {
+            return config.categoryID === obj.categoryId && obj.status === 'CHECKED';
+        }).map(t => t.title);
+
+        var uncompletedTasks = result.models.task.items.filter(function(obj) {
+            return config.categoryID === obj.categoryId && obj.status === 'UNCHECKED';
         }).map(t => t.title);
         
-        module.sendSocketNotification(config.title, tasks);
+        payload = {
+            complete: completedTasks, 
+            uncomplete: uncompletedTasks
+        };
+
+        module.sendSocketNotification(config.title, payload);
     });
 }
 

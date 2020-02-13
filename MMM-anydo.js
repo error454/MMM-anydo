@@ -1,10 +1,30 @@
-function generateList(content){
-    var myList = '<ul>';
-        
-    for(entry of content){
-        myList += '<li>' + entry + '</li>';
+function generateEntry(entry, useCheckboxes, isCompleted){
+    if(useCheckboxes){
+        var listItem = isCompleted ? '<i class="far fa-check-square"></i>' : '<i class="far fa-square"></i>';
+        return listItem + entry + '<br>';
     }
-    myList += '</ul>';
+    else{
+        return '<li>' + entry + '</li>';
+    }
+}
+
+function generateList(content, showCompleted, useCheckboxes){
+    if(content === undefined){
+        return "Loading...";
+    }
+
+    var myList = useCheckboxes ? '' : '<ul>';
+    for(entry of content.uncomplete){
+        myList += generateEntry(entry, useCheckboxes, false);
+    }
+
+    if(showCompleted){
+        for(entry of content.complete){
+            myList += generateEntry(entry, useCheckboxes, true);
+        }
+    }
+
+    myList += useCheckboxes ? '' : '</ul>';
     return myList;
 }
 
@@ -14,6 +34,8 @@ Module.register("MMM-anydo",{
         categoryID: "Your Any.do Category ID",
         user: "username",
         password: "password",
+        showCompleted: true,
+        useCheckboxes: true,
         frequency: 60000 // 1 minute
     },
 
@@ -32,7 +54,7 @@ Module.register("MMM-anydo",{
         listP.classList.add("bright");
         listP.classList.add("align-left");
 
-        listP.innerHTML = generateList(this.myContent);
+        listP.innerHTML = generateList(this.myContent, this.config.showCompleted, this.config.useCheckboxes);
         wrapper.appendChild(listP);
 
         return wrapper;
@@ -48,7 +70,7 @@ Module.register("MMM-anydo",{
     },
     
     socketNotificationReceived: function(notification, payload) {
-        Log.log(this.name + " received a socket notification: " + notification + " - Payload: " + payload);
+        //Log.log(this.name + " received a socket notification: " + notification + " - Completed: " + completedTasks + " Uncompleted: " + uncompletedTasks);
         if(notification == this.config.title){
             this.myContent = payload;
             this.updateDom();
