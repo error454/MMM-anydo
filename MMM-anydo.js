@@ -1,6 +1,6 @@
 function generateEntry(entry, useCheckboxes, isCompleted){
     if(useCheckboxes){
-        var listItem = isCompleted ? '<i class="far fa-check-square"></i>' : '<i class="far fa-square"></i>';
+        var listItem = isCompleted ? '<i class="far fa-check-square"></i> ' : '<i class="far fa-square"></i> ';
         return listItem + entry + '<br>';
     }
     else{
