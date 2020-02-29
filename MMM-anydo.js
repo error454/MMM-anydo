@@ -48,11 +48,13 @@ Module.register("MMM-anydo",{
         titleP.innerHTML = this.config.title;
 
         wrapper.appendChild(titleP);
+    	wrapper.appendChild(document.createElement("hr"));
 
         var listP = document.createElement("p");
         listP.classList.add("small");
         listP.classList.add("bright");
         listP.classList.add("align-left");
+        listP.classList.add("anydo-listitem");
 
         listP.innerHTML = generateList(this.myContent, this.config.showCompleted, this.config.useCheckboxes);
         wrapper.appendChild(listP);

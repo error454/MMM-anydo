@@ -1,4 +1,17 @@
 .anydo-title {  
-  height: 10px;
+  height: 0px;
   vertical-align: top;
+}
+
+.anydo-listitem {
+  margin-block-start: 0em;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0em 0;
+  padding: 0;
 }
